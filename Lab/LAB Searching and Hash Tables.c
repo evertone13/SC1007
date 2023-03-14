@@ -40,3 +40,44 @@ void dualSortedSearch(int A[],int size, int K, int dualIndex[])
             j--;
     }
 }
+
+//Question 4:
+ListNode* HashSearch(HashTable Q3Hash,int key){
+    int index;
+    listNode *temp;
+
+    //we may use Q3Hash.Table !=NULL
+    if(Q3Hash.hSize!=0)
+        index=Hash(key,Q3Hash.hSize);
+    else
+        return NULL;
+
+    temp=Q3Hash.Table[index].head;
+    while(temp!=NULL){
+        if(temp->key==key)
+            return temp;
+        temp=temp->next;
+    }
+    return NULL;
+}
+
+int HashInsert(HashTable* Q3HashPtr, int key)
+{
+    int index;
+    ListNode *newNode;
+
+    if(HashSearch(*Q3HashPtr,key)!=NULL)
+        return 0;
+    if(Q3HashPtr->hSize!=0)
+        index = Hash(key,Q3HashPtr->hSize);
+    
+    //The key is inserted from the front. It is not the same approach discussed in lecture
+    newNode = (ListNode *) malloc(sizeof(ListNode));
+    newNode->next=Q3HashPtr->Table[index].head;
+    Q3HashPtr->Table[index].head=newNode;
+
+    Q3HashPtr->Table[index].size++;
+    Q3HashPtr->nSize++;
+
+    return 1;
+}
